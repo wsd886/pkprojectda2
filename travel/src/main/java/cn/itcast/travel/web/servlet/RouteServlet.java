@@ -22,6 +22,7 @@ public class RouteServlet extends HttpServlet {
         //2.处理参数
         //类别id
         int cid = 0;
+        int cid1=5;
         if(cidStr != null && cidStr.length()>0)
         {
             //Integer.parseInt()将一个字符串转成int类型数据
