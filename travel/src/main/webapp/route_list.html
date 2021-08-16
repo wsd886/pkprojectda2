@@ -39,8 +39,39 @@
                      }
                 var beforePage ='<li class="threeword" onclick="load('+cid+','+beforeNum+')"><a href="javascript:void(0)">上一页</a></li>';
                 lis+=beforePage;
+
+                /*
+                1)一共展示10个页码，能够达到前五后四的效果
+                2)如果前边不够5个，后面超过4个，
+                3)如果后面不超过四个
+                 */
+                //定义开始位置begin，结束位置end
+                var begin;//开始位置
+                var end;//结束位置
+                //a、要显示10个页码
+                if(pb.totalPage <= 10){
+                    //页码不够10页
+                    begin = 1;
+                    end = pb.totalPage;
+                }else{
+                    //总页码超过10页
+                    begin = pb.currentPage - 5;
+                    end = pb.currentPage + 4;
+                    //b、如果前边不够五个，说明你的begin小于1
+                    if(begin < 1){
+                        begin = 1;
+                        end = begin + 9;
+                    }
+                    //c、如果后边不足4个
+                    if(end > pb.totalPage){
+                        end = pb.totalPage;
+                        begin = end - 9;
+                    }
+                }
+
+
                 //页码
-                for(var i =1;i<=pb.totalPage;i++){
+                for(var i =begin;i<=end;i++){
                     //创建页码的li
                     //判断当前页码是否等于i，如果等于，含有样式
                     if(pb.currentPage==i){
