@@ -12,16 +12,25 @@ import java.util.List;
 
 public class RouteDaoImpl implements RouteDao {
     @Override
-    public int findTotalCount(int cid)
+    public int findTotalCount(int cid,String rname)
     {
         Connection conn = null;
 
         try
         {
             conn = JDBCUtils.getConnection();
-            String sql = "select count(*) from tab_route where cid=?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setObject(1,cid);
+            String sql="select count(*) from tab_route ";
+            PreparedStatement pstmt=null;
+            if(rname != null && rname.length() >0){
+                sql += "where cid=? and rname like ?";
+                pstmt=conn.prepareStatement(sql);
+                pstmt.setObject(1,cid);
+                pstmt.setObject(2,"%"+rname+"%");
+            }else{
+                sql += " where cid=?";
+                pstmt=conn.prepareStatement(sql);
+                pstmt.setObject(1,cid);
+            }
             //执行sql
             ResultSet rs = pstmt.executeQuery();
             //处理结果
@@ -52,18 +61,29 @@ public class RouteDaoImpl implements RouteDao {
     }
 
     @Override
-    public List<Route> findByPage(int cid, int currentIndex, int pageSize)
+    public List<Route> findByPage(int cid, int currentIndex, int pageSize,String rname)
     {
         Connection conn = null;
 
         try
         {
             conn = JDBCUtils.getConnection();
-            String sql = "select * from tab_route where cid=? limit ?,?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setObject(1,cid);
-            pstmt.setObject(2,currentIndex);
-            pstmt.setObject(3,pageSize);
+            String sql="select * from tab_route ";
+            PreparedStatement pstmt=null;
+            if(rname != null && rname.length() > 0){
+                sql += " where cid=? and rname like ? limit ?,?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setObject(1,cid);
+                pstmt.setObject(2,"%"+rname+"%");
+                pstmt.setObject(3,currentIndex);
+                pstmt.setObject(4,pageSize);
+            }else{
+                sql += " where cid=? limit ?,?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setObject(1,cid);
+                pstmt.setObject(2,currentIndex);
+                pstmt.setObject(3,pageSize);
+            }
             //执行sql
             ResultSet rs = pstmt.executeQuery();
             //处理结果
