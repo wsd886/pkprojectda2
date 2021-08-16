@@ -14,7 +14,35 @@
             var search=location.search;
             //切割字符串，拿到第二个值
             var cid=search.split("=")[1];
-            alert(cid);
+            //alert(cid);
+            //发送ajax请求，请求/routeServlet，传递cid
+            $.get("/routeServlet",{"cid":cid},function (pb) {
+                //解析pageBean数据，展示到页面上
+                //分页工具条数展示
+                //1、1展示总页码和总记录数
+                $("#totalPage").html(pb.totalPage);
+                $("#totalCount").html(pb.totalCount);
+                //1、2展示分页页码
+                var lis="";
+                 var firstPage='<li><a href="">首页</a></li>';
+                 lis+=firstPage;
+                 //上一页
+                var beforePage = '<li class="threeword"><a href="#">上一页</a></li>';
+                lis+=beforePage;
+                //页码
+                for(var i=1;i<=pb.totalPage;i++){
+                    var li='<li><a href="#">'+i+'</a></li>';
+                    lis += li;
+                }
+                //下一页
+                var nextPage = '<li class="threeword"><a href="javascript:;">下一页</a></li>';
+                lis+=nextPage;
+                //末页
+                var lastPage = '<li class="threeword"><a href="javascript:;">末页</a></li>';
+                lis+=nextPage;
+                //再将内容设置到ul中
+                $("#pageNum").html(lis);
+            })
         })
     </script>
 </head>
@@ -165,24 +193,11 @@
                     </ul>
                     <div class="page_num_inf">
                         <i></i> 共
-                        <span>12</span>页<span>132</span>条
+                        <span id="totalPage"></span>页<span id="totalCount"></span>条
                     </div>
                     <div class="pageNum">
-                        <ul>
-                            <li><a href="">首页</a></li>
-                            <li class="threeword"><a href="#">上一页</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">6</a></li>
-                            <li><a href="#">7</a></li>
-                            <li><a href="#">8</a></li>
-                            <li><a href="#">9</a></li>
-                            <li><a href="#">10</a></li>
-                            <li class="threeword"><a href="javascript:;">下一页</a></li>
-                            <li class="threeword"><a href="javascript:;">末页</a></li>
+                        <ul id="pageNum">
+
                         </ul>
                     </div>
                 </div>
