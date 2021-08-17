@@ -15,9 +15,9 @@ import cn.itcast.travel.service.RouteService;
 import java.util.List;
 
 public class RouteServiceImpl implements RouteService {
-    RouteImgDao routeImgDao=new RouteImgDaoImpl();
-    SellerDao sellerDao=new SellerDaoImpl();
-    RouteDao routeDao=new RouteDaoImpl();
+    private RouteImgDao routeImgDao=new RouteImgDaoImpl();
+    private SellerDao sellerDao=new SellerDaoImpl();
+    private RouteDao routeDao=new RouteDaoImpl();
     @Override
     public PageBean pageQuery(int cid, int currentPage, int pageSize,String rname)
     {
