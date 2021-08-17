@@ -23,6 +23,9 @@ public class RouteServlet extends HttpServlet {
         //接收rname线路参数
         String rname = request.getParameter("rname");
         rname = new String(rname.getBytes("ISO-8859-1"),"UTF-8");
+        if("null".equals(rname)){
+            rname=null;
+        }
         //2.处理参数
         //类别id
         int cid = 0;
