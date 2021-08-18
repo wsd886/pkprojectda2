@@ -18,27 +18,30 @@ import java.sql.ResultSet;
 public class IsFavoriteSerlvet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //1、获取线路rid
+        //1.获取线路id -- rid
         String rid = request.getParameter("rid");
-        //获取当前登录的用户user
-        User user=(User)request.getSession().getAttribute("user");
+        //2.获取当前登录的用户user
+        User user = (User) request.getSession().getAttribute("user");
         int uid;
-        if(user == null){
+        if(user == null)
+        {
             //用户尚未登录
             uid = 0;
-        }else {
+        }
+        else
+        {
             //用户已经登录
             uid = user.getUid();
         }
-        //调用service查询是否收藏
+        //3.调用service查询是否收藏
         FavoriteService favoriteService = new FavoriteServiceImpl();
         boolean flag = favoriteService.isFavorite(Integer.parseInt(rid),uid);
-        //将FLAG写回客户端
+        //4.将flag写回客户端
         ResultInfo resultInfo = new ResultInfo();
         resultInfo.setFlag(flag);
 
         ObjectMapper mapper = new ObjectMapper();
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType("application/json;charset=-UTF-8");
         mapper.writeValue(response.getOutputStream(),resultInfo);
     }
 

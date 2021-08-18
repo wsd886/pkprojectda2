@@ -10,7 +10,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public boolean isFavorite(int rid, int uid) {
         Favorite favorite = favoriteDao.FindByuUidAndRid(uid,rid);
-        if(favorite!=null){
+        if(favorite != null){
             //该用户收藏过
             return true;
         }else {

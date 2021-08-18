@@ -16,7 +16,7 @@ public class FavoriteDaoImpl implements FavoriteDao {
 
         try {
             conn= JDBCUtils.getConnection();
-            String sql="select  * from tab_favorite where uid=? and rid=?";
+            String sql="select * from tab_favorite where uid=? and rid=?";
             PreparedStatement pstmt=conn.prepareStatement(sql);
             pstmt.setObject(1,uid);
             pstmt.setObject(2,rid);
@@ -34,5 +34,30 @@ public class FavoriteDaoImpl implements FavoriteDao {
             }
         }
         return null;
+    }
+
+    @Override
+    public int FindCountByRid(int rid) {
+        Connection conn=null;
+        try {
+            conn=JDBCUtils.getConnection();
+            String sql="select count(*) from tab_favorite where rid=?";
+            PreparedStatement pstmt=conn.prepareStatement(sql);
+            pstmt.setObject(1,rid);
+            ResultSet rs=pstmt.executeQuery();
+            if(rs.next()){
+                int count = rs.getInt(1);
+                return count;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
 }
